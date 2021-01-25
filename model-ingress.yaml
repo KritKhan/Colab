@@ -3,14 +3,13 @@ kind: Ingress
 metadata:
   name: model-ingress
   annotations:
-    # use the shared ingress-nginx
-    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host:
-    http:
+  - http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: model-ingress
+          serviceName: model-service
           servicePort: 8501
