@@ -1,17 +1,16 @@
-apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: model-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    # use the shared ingress-nginx
+    kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-  - http:
+  - host:
+    http:
       paths:
       - path: /
-        pathType: Prefix
         backend:
-          service:
-            name: model-service
-            port:
-              number: 8501
+          serviceName: model-ingress
+          servicePort: 8501
