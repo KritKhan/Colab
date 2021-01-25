@@ -1,16 +1,9 @@
-  apiVersion: networking.k8s.io/v1beta1
+  apiVersion: extensions/v1beta1
   kind: Ingress
   metadata:
-    annotations:
-      kubernetes.io/ingress.class: nginx
     name: model-ingress
     namespace: test-model
   spec:
-    rules:
-      - host:
-        http:
-          paths:
-            - backend:
-                serviceName: model-service
-                servicePort: 80
-              path: /
+    backend:
+      serviceName: model-service
+      servicePort: 8501
