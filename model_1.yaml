@@ -18,15 +18,22 @@ spec:
       volumes:
       - name: model-path
         hostPath:
-          path: /tmp/mounted_model/0001
+          path: /tmp/mounted_model/0001/
       containers:
       - name: automl-image
         image: gcr.io/cloud-devrel-public-resources/gcloud-container-1.14.0:latest
         volumeMounts: 
         - name: model-path
-          mountPath: /tmp/mounted_model/0001
+          mountPath: /tmp/mounted_model/0001/
         ports:
         - containerPort: 8501
+      
+      - name: ml-endpoint
+        image: asia.gcr.io/poc-innovation-iot/ml-endpoint:latest
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: ml-endpoint-config
 ---
 apiVersion: v1
 kind: Service
@@ -34,7 +41,7 @@ metadata:
   name: model-service
   namespace: test-model
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: model
   ports:
