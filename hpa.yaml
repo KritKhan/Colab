@@ -1,17 +1,19 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: pubsub
+  name: scale-deployment-pubsub
+  namespace: test-model
 spec:
   minReplicas: 1
-  maxReplicas: 50
+  maxReplicas: 80
   metrics:
   - external:
       metricName: pubsub.googleapis.com|subscription|num_undelivered_messages
       metricSelector:
         matchLabels:
+          resource.labels.project_id: poc-innovation-iot
           resource.labels.subscription_id: chulaxktb-image-validation-sub
-      targetAverageValue: "2"
+      targetAverageValue: "10"
     type: External
   scaleTargetRef:
     apiVersion: apps/v1
